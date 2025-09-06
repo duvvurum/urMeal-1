@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>urMeal - Meal Planning Made Easy</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <style>
+        .container {
+            display: flex;
+            gap: 32px;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+        .left-section, .right-section {
+            background: #fff;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .left-section {
+            flex: 1.2;
+        }
+        .right-section {
+            flex: 1;
+        }
+        @media (max-width: 800px) {
+            .container {
+                flex-direction: column;
+            }
+        }
+        /* Table styling */
+        .meal-plan-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px auto 0 auto;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .meal-plan-table th, .meal-plan-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .meal-plan-table th {
+            background: #f0f0f0;
+        }
+        .meal-plan-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to urMeal</h1>
+        <p>Your personal meal planning assistant.</p>
+    </header>
+    <main>
+        <div class="container">
+            <section class="left-section">
+                <h2>Meal Preferences Form</h2>
+                <form id="preferences-form">
+                    <fieldset>
+                        <legend>1. Demographics</legend>
+                        <label>Age: <input type="number" name="age" min="1" max="120" required></label>
+                        <label>Gender:
+                            <select name="gender" required>
+                                <option value="">Select</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </label>
+                    </fieldset>
+                    <fieldset>
+                        <legend>2. Meal Preferences</legend>
+                        <select name="mealPreference" required>
+                            <option value="">Select</option>
+                            <option value="veg">Vegetarian</option>
+                            <option value="nonveg">Non-Vegetarian</option>
+                            <option value="both">Both</option>
+                            <option value="jain">Jain</option>
+                        </select>
+                    </fieldset>
+                    <fieldset>
+                        <legend>3. Regional Preferences</legend>
+                        <select name="region" required>
+                            <option value="">Select</option>
+                            <option value="andhra">Andhra</option>
+                            <option value="tamilnadu">Tamilnadu</option>
+                            <option value="karnataka">Karnataka</option>
+                            <option value="kerala">Kerala</option>
+                        </select>
+                    </fieldset>
+                    <fieldset>
+                        <legend>4. Food Allergies</legend>
+                        <label><input type="checkbox" name="allergies" value="nuts">Nuts</label>
+                        <label><input type="checkbox" name="allergies" value="dairy">Dairy</label>
+                        <label><input type="checkbox" name="allergies" value="gluten">Gluten</label>
+                        <label><input type="checkbox" name="allergies" value="soy">Soy</label>
+                        <label><input type="checkbox" name="allergies" value="seafood">Seafood</label>
+                    </fieldset>
+                    <fieldset>
+                        <legend>5. Goal</legend>
+                        <select name="goal" required>
+                            <option value="">Select</option>
+                            <option value="weight-loss">Weight Loss</option>
+                            <option value="weight-gain">Weight Gain</option>
+                            <option value="body-building">Body Building</option>
+                            <option value="child-nutrition">Child Nutrition</option>
+                        </select>
+                    </fieldset>
+                    <button type="submit">Submit Preferences</button>
+                </form>
+            </section>
+            <section class="right-section">
+                <h2>Your Preferences</h2>
+                <div id="meal-plan-output">
+                    <p>Fill out your preferences to see a personalized meal plan!</p>
+                </div>
+            </section>
+        </div>
+        <!-- Weekly Meal Plan Table -->
+        <section style="max-width:1000px; margin:40px auto;">
+            <h2>Weekly Meal Plan</h2>
+            <div style="overflow-x:auto;">
+                <table class="meal-plan-table">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Before Breakfast</th>
+                            <th>Breakfast</th>
+                            <th>Snack</th>
+                            <th>Lunch</th>
+                            <th>Evening Snack</th>
+                            <th>Dinner</th>
+                            <th>Before Bed Snack</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Monday</td>
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td>Tuesday</td>
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td>Wednesday</td>
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td>Thursday</td>
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td>Friday</td>
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td>Saturday</td>
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        </tr>
+                        <tr>
+                            <td>Sunday</td>
+                            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 urMeal. All rights reserved.</p>
+    </footer>
+    <script src="scripts/app.js"></script>
+    <script>
+        const ollamaModel = 'qwen:4b';
+    </script>
+</body>
+</html>
