@@ -5,9 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const ollamaModel = 'qwen:4b';
 
     function buildPrompt(age, gender, mealPreference, region, allergies, goal) {
-        return `Generate Indian meal plan for a ${age}-year-old ${gender} who prefers ${mealPreference} food from ${region}, is allergic to ${allergies.length ? allergies.join(', ') : 'none'}, and whose goal is ${goal}.
-List meals for each day: before breakfast, breakfast, snack, lunch, evening snack, dinner, before bed snack.
-`;
+        return `Generate an Indian meal plan for a single day for a ${age}-year-old ${gender} who prefers ${mealPreference} food from ${region}, is allergic to ${allergies.length ? allergies.join(', ') : 'none'}, and whose goal is ${goal}.
+List the meals for the following times: before breakfast, breakfast, snack, lunch, evening snack, dinner, before bed snack.
+Format the output as a markdown table with columns: Time, Meal.
+Only output the markdown table, nothing else.`;
     }
 
     async function fetchMealPlan(prompt) {
@@ -64,20 +65,32 @@ List meals for each day: before breakfast, breakfast, snack, lunch, evening snac
                 try {
                     const mealPlanText = await fetchMealPlan(prompt);
                     console.log('LLM response:', mealPlanText); // Debug: See what Ollama returns
-                    // Parse and update table
+                    // Parse and render the markdown table
                     const parsedRows = parseMealPlanTable(mealPlanText);
                     if (parsedRows.length === 0) {
                         output.innerHTML += `<p style="color:red;">Meal plan could not be parsed. See console for details.</p>`;
                         return;
                     }
-                    parsedRows.forEach((cells, idx) => {
-                        if (mealTable.rows[idx]) {
-                            for (let i = 1; i < mealTable.rows[idx].cells.length; i++) {
-                                mealTable.rows[idx].cells[i].textContent = cells[i] || '';
-                            }
-                        }
+                    // Render the table below the preferences
+                    let tableHtml = `
+                        <h3>Today's Meal Plan</h3>
+                        <table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Meal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+                    parsedRows.forEach(cells => {
+                        tableHtml += `<tr><td>${cells[0] || ''}</td><td>${cells[1] || ''}</td></tr>`;
                     });
-                    output.innerHTML += `<p>Meal plan generated!</p>`;
+                    tableHtml += `
+                            </tbody>
+                        </table>
+                    `;
+                    output.innerHTML += tableHtml + `<p>Meal plan generated!</p>`;
                 } catch (err) {
                     output.innerHTML += `<p style="color:red;">Failed to generate meal plan.</p>`;
                 }

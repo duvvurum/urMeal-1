@@ -180,6 +180,48 @@
     <script src="scripts/app.js"></script>
     <script>
         const ollamaModel = 'qwen:4b';
+        function parseMealPlanTable(text) {
+            // Find markdown table lines
+            const lines = text.split('\n').filter(line => line.includes('|'));
+            if (lines.length < 2) return []; // Not a table
+            // Remove header and separator
+            const rows = lines.slice(2);
+            return rows.map(row => row.split('|').map(cell => cell.trim()).slice(1, -1));
+        }
+        document.getElementById('confirm-btn').onclick = async function () {
+    output.innerHTML += `<p>Generating meal plan...</p>`;
+    const prompt = buildPrompt(age, gender, mealPreference, region, allergies, goal);
+    try {
+        const mealPlanText = await fetchMealPlan(prompt);
+        console.log('LLM response:', mealPlanText);
+        const parsedRows = parseMealPlanTable(mealPlanText);
+        if (parsedRows.length === 0) {
+            output.innerHTML += `<p style="color:red;">Meal plan could not be parsed. See console for details.</p>`;
+            return;
+        }
+        let tableHtml = `
+            <h3>Today's Meal Plan</h3>
+            <table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse;">
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Meal</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+        parsedRows.forEach(cells => {
+            tableHtml += `<tr><td>${cells[0] || ''}</td><td>${cells[1] || ''}</td></tr>`;
+        });
+        tableHtml += `
+                </tbody>
+            </table>
+        `;
+        output.innerHTML += tableHtml + `<p>Meal plan generated!</p>`;
+    } catch (err) {
+        output.innerHTML += `<p style="color:red;">Failed to generate meal plan.</p>`;
+    }
+};
     </script>
 </body>
 </html>
